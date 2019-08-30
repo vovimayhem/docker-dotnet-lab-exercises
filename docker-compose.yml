@@ -4,6 +4,10 @@ volumes:
   postgres_data:
 
 services:
+  web:
+    build:
+      context: .
+
   postgres:
     image: postgres:11-alpine
     ports:
