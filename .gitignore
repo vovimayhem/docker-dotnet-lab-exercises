@@ -89,3 +89,6 @@ _[Ss]cripts
 .nuget
 .local
 .*_hist*
+
+/**/*.env
+!/**/*example.env
