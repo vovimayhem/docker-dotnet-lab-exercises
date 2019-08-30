@@ -4,22 +4,26 @@ volumes:
   postgres_data:
 
 services:
-  web: &app
+  migrate: &app
     build:
       context: .
     volumes:
       - .:/usr/src
+    command: dotnet ef database update
     depends_on:
       - postgres
-      - migration
-    ports:
-      - ${EJEMPLO_WEB_PORT:-5000}:5000
     environment:
       DATABASE_URL: postgres://postgres:3x4mpl3P455@postgres:5432/demo_development
+      PORT: ${EJEMPLO_WEB_PORT:-5000}
 
-  migrate:
+  web:
     <<: *app
-    command: dotnet ef database update
+    command: dotnet watch run
+    depends_on:
+      - postgres
+      - migrate
+    ports:
+      - ${EJEMPLO_WEB_PORT:-5000}:${EJEMPLO_WEB_PORT:-5000}
 
   postgres:
     image: postgres:11-alpine
