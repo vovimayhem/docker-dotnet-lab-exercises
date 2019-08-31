@@ -4,24 +4,17 @@ volumes:
   postgres_data:
 
 services:
-  migrate: &app
+  web:
     build:
       context: .
     volumes:
       - .:/usr/src
-    command: dotnet ef database update
     depends_on:
       - postgres
+    entrypoint: /usr/src/dev-entrypoint.sh
     environment:
       DATABASE_URL: postgres://postgres:3x4mpl3P455@postgres:5432/demo_development
       PORT: ${EJEMPLO_WEB_PORT:-5000}
-
-  web:
-    <<: *app
-    command: dotnet watch run
-    depends_on:
-      - postgres
-      - migrate
     ports:
       - ${EJEMPLO_WEB_PORT:-5000}:${EJEMPLO_WEB_PORT:-5000}
 
